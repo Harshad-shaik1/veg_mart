@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>veg-mart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* small visual tweaks */
+      .cart-badge {
+        min-width: 20px;
+      }
+      /* smooth modal animations */
+      .modal-enter { transform: translateY(8px); opacity: 0; }
+      .modal-enter-active { transform: translateY(0); opacity: 1; transition: all .18s ease; }
+      .modal-leave { opacity: 1; }
+      .modal-leave-active { opacity: 0; transition: opacity .12s ease; }
+    </style>
+</head>
+<body class="bg-green-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-green-700 text-white shadow-lg sticky top-0 z-20">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="#" class="text-3xl font-bold tracking-tight">vegetables <span class="text-green-300">mart</span></a>
+      <nav class="hidden md:flex space-x-6 text-lg">
+        <a href="#home" class="hover:text-green-300 transition">Home</a>
+        <a href="#products" class="hover:text-green-300 transition">Products</a>
+        <a href="#about" class="hover:text-green-300 transition">About Us</a>
+        <a href="#contact" class="hover:text-green-300 transition">Contact</a>
+      </nav>
+
+      <!-- Cart button -->
+      <div class="relative">
+        <button id="cart-toggle" class="bg-yellow-500 hover:bg-yellow-600 text-green-900 px-3 py-2 rounded-md font-semibold flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 7h14l-2-7M10 21a1 1 0 11-2 0 1 1 0 012 0zm8 0a1 1 0 11-2 0 1 1 0 012 0z" />
+          </svg>
+          Cart
+          <span id="cart-count" class="ml-1 bg-white text-green-800 rounded-full px-2 text-sm font-bold cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="py-16 md:py-24">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
+      <div class="md:w-1/2 text-center md:text-left">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-green-900 leading-tight">
+          Delivering <span class="text-yellow-600">Farm-Fresh</span> Produce to Every Indian Home.
+        </h1>
+        <p class="mt-4 text-xl text-gray-600">Sourced directly from local Indian farmers. Pure, organic, and full of flavour.</p>
+        <a href="#products" class="mt-8 inline-block bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 shadow-md">Shop Now</a>
+      </div>
+      <div class="md:w-1/2 mt-8 md:mt-0">
+        <img src="images/colorful-background-with-fresh-healthy-vegetables.avif"
+             alt="A basket full of fresh Indian vegetables"
+             class="w-full h-auto object-cover rounded-xl shadow-2xl transform hover:scale-[1.02] transition duration-500"
+             onerror="this.src='https://placehold.co/600x400/15803d/ffffff?text=Fresh+Produce+Basket'">
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section id="products" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center text-green-800 mb-12">Our Selection: Sabzi Bazaaron Se!</h2>
+
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+        <!-- Product cards: note data attributes used by JS -->
+        <div class="product-card bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition duration-300">
+          <img src="images/onions.webp" alt="Onion" class="w-full h-40 object-cover rounded-lg mb-4" onerror="this.src='https://placehold.co/600x400/9ae6b4/064e3b?text=Onion'">
+          <h3 class="text-2xl font-semibold text-green-700">Onion (Pyaz)</h3>
+          <p class="text-gray-500 mt-2">Essential for almost every Indian dish. Crisp and pungent.</p>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xl font-bold text-green-600">₹45 / kg</span>
+            <button class="add-to-cart bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm transition duration-200"
+                    data-id="onion" data-name="Onion (Pyaz)" data-price="45" data-unit="kg">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <div class="product-card bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition duration-300">
+          <img src="images/organic-potatoes-on-rustic-background.jpg" alt="Potato" class="w-full h-40 object-cover rounded-lg mb-4" onerror="this.src='https://placehold.co/600x400/fef3c7/92400e?text=Potato'">
+          <h3 class="text-2xl font-semibold text-green-700">Potato (Aloo)</h3>
+          <p class="text-gray-500 mt-2">Versatile and starchy, perfect for Aloo Gobi or Samosas.</p>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xl font-bold text-green-600">₹29 / kg</span>
+            <button class="add-to-cart bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm transition duration-200"
+                    data-id="potato" data-name="Potato (Aloo)" data-price="30" data-unit="kg">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <div class="product-card bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition duration-300">
+          <img src="images/ladies-finger-un-branded-no-whole-original-imafv2ftstpp8e4e.webp" alt="Okra" class="w-full h-40 object-cover rounded-lg mb-4" onerror="this.src='https://placehold.co/600x400/c7f9db/064e3b?text=Okra'">
+          <h3 class="text-2xl font-semibold text-green-700">Okra (Bhindi)</h3>
+          <p class="text-gray-500 mt-2">Tender Lady's Finger, ideal for crispy Bhindi Fry.</p>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xl font-bold text-green-600">₹69 / kg</span>
+            <button class="add-to-cart bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm transition duration-200"
+                    data-id="okra" data-name="Okra (Bhindi)" data-price="70" data-unit="kg">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <div class="product-card bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition duration-300">
+          <img src="images/cauliflower.webp" alt="Cauliflower" class="w-full h-40 object-cover rounded-lg mb-4" onerror="this.src='https://placehold.co/600x400/fef3c7/065f46?text=Cauliflower'">
+          <h3 class="text-2xl font-semibold text-green-700">Cauliflower (Gobi)</h3>
+          <p class="text-gray-500 mt-2">Large, fresh heads perfect for Aloo Gobi or Gobi Manchurian.</p>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xl font-bold text-green-600">₹55 / piece</span>
+            <button class="add-to-cart bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm transition duration-200"
+                    data-id="cauliflower" data-name="Cauliflower (Gobi)" data-price="55" data-unit="piece">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <div class="product-card bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition duration-300">
+          <img src="images/green chilli.jpg" alt="Cauliflower" class="w-full h-40 object-cover rounded-lg mb-4" onerror="this.src='https://placehold.co/600x400/fef3c7/065f46?text=Cauliflower'">
+          <h3 class="text-2xl font-semibold text-green-700">green chilli (mirchi)</h3>
+          <p class="text-gray-500 mt-2">chilli dark green</p>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xl font-bold text-green-600">₹15/100g</span>
+            <button class="add-to-cart bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm transition duration-200"
+                    data-id="green chilli" data-name="green chilli" data-price="55" data-unit="piece">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <div class="product-card bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition duration-300">
+          <img src="images/vankaya.webp" alt="Cauliflower" class="w-full h-40 object-cover rounded-lg mb-4" onerror="this.src='https://placehold.co/600x400/fef3c7/065f46?text=Cauliflower'">
+          <h3 class="text-2xl font-semibold text-green-700">brinjal kateri(baingan)</h3>
+          <p class="text-gray-500 mt-2">brinjal kateri(baingan)/mulla vankaya</p>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xl font-bold text-green-600">₹29/250g</span>
+            <button class="add-to-cart bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm transition duration-200"
+                    data-id="brinjal" data-name="brinjal" data-price="55" data-unit="piece">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <div class="product-card bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition duration-300">
+          <img src="images/tomatoes-falling-out-of-a-basket-on-wooden-surface-dark-background.webp" alt="Tomato" class="w-full h-40 object-cover rounded-lg mb-4" onerror="this.src='https://placehold.co/600x400/fca5a5/7f1d1d?text=Tomato'">
+          <h3 class="text-2xl font-semibold text-green-700">Tomato (Tamatar)</h3>
+          <p class="text-gray-500 mt-2">Juicy red tomatoes, the base for most Indian curries.</p>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xl font-bold text-green-600">₹59/ kg</span>
+            <button class="add-to-cart bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm transition duration-200"
+                    data-id="tomato" data-name="Tomato (Tamatar)" data-price="60" data-unit="kg">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <div class="product-card bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition duration-300">
+          <img src="images/carrots-in-a-wooden-bowl-in-close-up.webp" alt="Carrot" class="w-full h-40 object-cover rounded-lg mb-4" onerror="this.src='https://placehold.co/600x400/fadcb6/92400e?text=Carrot'">
+          <h3 class="text-2xl font-semibold text-green-700">Carrot (Gajar)</h3>
+          <p class="text-gray-500 mt-2">Sweet and crunchy, perfect for salads and Gajar ka Halwa.</p>
+          <div class="flex justify-between items-center mt-4">
+            <span class="text-xl font-bold text-green-600">₹39/ kg</span>
+            <button class="add-to-cart bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm transition duration-200"
+                    data-id="carrot" data-name="Carrot (Gajar)" data-price="40" data-unit="kg">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="py-16 bg-green-50">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold text-green-800 mb-6">Our Commitment to India</h2>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">We believe in supporting local Kisaans (farmers). Every vegetable is hand-picked, ethically sourced, and guaranteed to be free of harmful pesticides.</p>
+      <div class="mt-8 flex justify-center space-x-8 text-green-700">
+        <div class="p-4 bg-white rounded-lg shadow-md w-32">
+          <p class="text-3xl font-bold">100%</p>
+          <p class="text-sm">Local</p>
+        </div>
+        <div class="p-4 bg-white rounded-lg shadow-md w-32">
+          <p class="text-3xl font-bold">1 Day</p>
+          <p class="text-sm">Delivery</p>
+        </div>
+        <div class="p-4 bg-white rounded-lg shadow-md w-32">
+          <p class="text-3xl font-bold">50+</p>
+          <p class="text-sm">Varieties</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="bg-green-800 text-white py-12">
+    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+      <div>
+        <h3 class="text-2xl font-bold mb-3">Fresh vegetables</h3>
+        <p class="text-green-200">Your trusted source for daily vegetables across India.</p>
+      </div>
+      <div>
+        <h4 class="text-xl font-semibold mb-3">Quick Links</h4>
+        <ul class="space-y-2 text-green-300">
+          <li><a href="#products" class="hover:text-white transition">Order Online</a></li>
+          <li><a href="#about" class="hover:text-white transition">Our Farmers</a></li>
+          <li><a href="#" class="hover:text-white transition">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xl font-semibold mb-3">Get in Touch</h4>
+        <p class="text-green-200">Email: support@freshvegetabls.in</p>
+        <p class="text-green-200">Phone: +91 9542128452</p>
+        <p class="mt-4 text-sm text-green-300">Serving Bengaluru, Mumbai, HYD, Delhi & more.</p>
+      </div>
+    </div>
+    <div class="text-center mt-8 pt-4 border-t border-green-700">
+      <p class="text-sm text-green-300">&copy; 2025 All rights reserved. Aerobyte Innovations Pvt.Ltd</p>
+    </div>
+  </footer>
+
+  <!-- Cart Modal (hidden by default) -->
+  <div id="cart-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/40" id="cart-modal-backdrop"></div>
+    <div class="fixed right-0 top-0 bottom-0 w-full md:w-96 bg-white shadow-2xl overflow-auto p-6">
+      <div class="flex justify-between items-center">
+        <h3 class="text-2xl font-bold text-green-700">Your Cart</h3>
+        <div class="flex gap-2">
+          <button id="clear-cart" class="text-sm text-red-600 hover:underline">Clear</button>
+          <button id="close-cart" class="text-lg text-gray-600 hover:text-gray-900">&times;</button>
+        </div>
+      </div>
+
+      <div id="cart-items" class="mt-6 space-y-4">
+        <!-- JS injects cart items here -->
+      </div>
+
+      <div id="cart-empty" class="text-center text-gray-500 mt-6 hidden">
+        Your cart is empty. Add some fresh sabzi!
+      </div>
+
+      <div class="mt-6 border-t pt-4">
+        <div class="flex justify-between items-center">
+          <span class="text-lg font-semibold">Subtotal</span>
+          <span id="cart-subtotal" class="text-xl font-bold text-green-700">₹0</span>
+        </div>
+        <p class="text-sm text-gray-500 mt-1">Taxes and delivery calculated at checkout.</p>
+
+        <div class="mt-6 flex gap-3">
+          <button id="checkout-start" class="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white py-3 rounded-lg font-semibold">Checkout</button>
+          <button id="continue-shopping" class="flex-1 border border-green-700 text-green-700 py-3 rounded-lg">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="fixed inset-0 z-60 hidden">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-6">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-xl p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-2xl font-bold text-green-700">Checkout</h3>
+          <button id="checkout-close" class="text-gray-600 text-xl">&times;</button>
+        </div>
+
+        <form id="checkout-form" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex flex-col">
+              <span class="text-sm font-medium text-gray-700">Name</span>
+              <input name="name" required class="mt-1 p-2 border rounded" placeholder="Full name">
+            </label>
+
+            <label class="flex flex-col">
+              <span class="text-sm font-medium text-gray-700">Phone</span>
+              <input name="phone" required pattern="[0-9]{10}" class="mt-1 p-2 border rounded" placeholder="10-digit phone">
+            </label>
+          </div>
+
+          <label class="flex flex-col">
+            <span class="text-sm font-medium text-gray-700">Delivery Address</span>
+            <textarea name="address" required class="mt-1 p-2 border rounded" rows="3" placeholder="House no, street, city, pincode"></textarea>
+          </label>
+
+          <div>
+            <h4 class="font-semibold text-gray-700">Order Summary</h4>
+            <div id="checkout-summary" class="mt-2 max-h-40 overflow-auto text-sm text-gray-700 space-y-2">
+              <!-- injected summary -->
+            </div>
+            <div class="flex justify-between items-center mt-4">
+              <span class="text-lg font-semibold">Total</span>
+              <span id="checkout-total" class="text-lg font-bold text-green-700">₹0</span>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <button type="submit" class="flex-1 bg-green-700 hover:bg-green-800 text-white py-3 rounded font-semibold">Place Order</button>
+            <button type="button" id="checkout-cancel" class="flex-1 border border-gray-300 py-3 rounded">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-4 py-2 rounded shadow hidden z-70"></div>
+
+  <!-- Scripts -->
+  <script>
+  (function () {
+    // --- Storage helpers ---
+    const STORAGE_KEY = 'freshSabziCart_v1';
+
+    function loadCart() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        console.error('Cart load error', e);
+        return {};
+      }
+    }
+    function saveCart(cart) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+      renderCartCount();
+    }
+
+    // --- Cart data helpers ---
+    function addToCart(item) {
+      const cart = loadCart();
+      if (cart[item.id]) {
+        cart[item.id].quantity += 1;
+      } else {
+        cart[item.id] = {
+          id: item.id,
+          name: item.name,
+          price: Number(item.price),
+          unit: item.unit || '',
+          quantity: 1
+        };
+      }
+      saveCart(cart);
+      showToast(`${item.name} added to cart`);
+    }
+
+    function updateQuantity(id, newQty) {
+      const cart = loadCart();
+      if (!cart[id]) return;
+      if (newQty <= 0) {
+        delete cart[id];
+      } else {
+        cart[id].quantity = newQty;
+      }
+      saveCart(cart);
+      renderCartModal();
+    }
+
+    function removeItem(id) {
+      const cart = loadCart();
+      if (cart[id]) {
+        delete cart[id];
+        saveCart(cart);
+        renderCartModal();
+      }
+    }
+
+    function clearCart() {
+      localStorage.removeItem(STORAGE_KEY);
+      renderCartModal();
+      renderCartCount();
+    }
+
+    function getCartItemsArray() {
+      const cart = loadCart();
+      return Object.values(cart);
+    }
+
+    function computeTotals() {
+      const items = getCartItemsArray();
+      let subtotal = 0;
+      for (const it of items) subtotal += it.price * it.quantity;
+      return { subtotal };
+    }
+
+    // --- UI elements ---
+    const cartToggle = document.getElementById('cart-toggle');
+    const cartModal = document.getElementById('cart-modal');
+    const cartBackdrop = document.getElementById('cart-modal-backdrop');
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartEmptyEl = document.getElementById('cart-empty');
+    const cartSubtotalEl = document.getElementById('cart-subtotal');
+    const cartCountEl = document.getElementById('cart-count');
+    const clearCartBtn = document.getElementById('clear-cart');
+    const closeCartBtn = document.getElementById('close-cart');
+    const continueShoppingBtn = document.getElementById('continue-shopping');
+    const checkoutBtn = document.getElementById('checkout-start');
+
+    const checkoutModal = document.getElementById('checkout-modal');
+    const checkoutClose = document.getElementById('checkout-close');
+    const checkoutCancel = document.getElementById('checkout-cancel');
+    const checkoutForm = document.getElementById('checkout-form');
+    const checkoutSummary = document.getElementById('checkout-summary');
+    const checkoutTotal = document.getElementById('checkout-total');
+    const toastEl = document.getElementById('toast');
+
+    // update cart count badge
+    function renderCartCount() {
+      const items = getCartItemsArray();
+      const totalQty = items.reduce((s, it) => s + it.quantity, 0);
+      cartCountEl.textContent = totalQty;
+      cartCountEl.style.display = totalQty ? 'inline-block' : 'inline-block';
+    }
+
+    function formatRupee(n) {
+      // simple rupee formatting, no locales to keep consistent
+      return '₹' + Number(n).toFixed(0);
+    }
+
+    // render cart modal list
+    function renderCartModal() {
+      const items = getCartItemsArray();
+      cartItemsEl.innerHTML = '';
+      if (items.length === 0) {
+        cartEmptyEl.classList.remove('hidden');
+        cartSubtotalEl.textContent = formatRupee(0);
+        return;
+      }
+      cartEmptyEl.classList.add('hidden');
+
+      for (const it of items) {
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between gap-3 p-2 border rounded';
+        row.innerHTML = `
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold text-green-800 truncate">${escapeHtml(it.name)}</div>
+            <div class="text-sm text-gray-500">${escapeHtml(it.unit)} • ${formatRupee(it.price)} each</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button data-action="dec" data-id="${it.id}" class="px-2 py-1 rounded border text-green-700">-</button>
+            <div class="px-3">${it.quantity}</div>
+            <button data-action="inc" data-id="${it.id}" class="px-2 py-1 rounded border text-green-700">+</button>
+            <div class="ml-3 text-right">
+              <div class="text-sm font-semibold">${formatRupee(it.price * it.quantity)}</div>
+              <button data-action="remove" data-id="${it.id}" class="text-xs text-red-600 mt-1 hover:underline">Remove</button>
+            </div>
+          </div>
+        `;
+        cartItemsEl.appendChild(row);
+      }
+
+      // attach handlers for quantity buttons and remove
+      cartItemsEl.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const action = btn.dataset.action;
+          const id = btn.dataset.id;
+          const cart = loadCart();
+          if (!cart[id]) return;
+          if (action === 'inc') {
+            updateQuantity(id, cart[id].quantity + 1);
+          } else if (action === 'dec') {
+            updateQuantity(id, cart[id].quantity - 1);
+          } else if (action === 'remove') {
+            removeItem(id);
+          }
+        });
+      });
+
+      const totals = computeTotals();
+      cartSubtotalEl.textContent = formatRupee(totals.subtotal);
+    }
+
+    // modal show/hide
+    function showCartModal() {
+      renderCartModal();
+      cartModal.classList.remove('hidden');
+    }
+    function hideCartModal() {
+      cartModal.classList.add('hidden');
+    }
+
+    // --- attach Add to Cart to buttons ---
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const name = btn.dataset.name;
+        const price = Number(btn.dataset.price || 0);
+        const unit = btn.dataset.unit || '';
+        addToCart({ id, name, price, unit });
+      });
+    });
+
+    // header cart controls
+    cartToggle.addEventListener('click', showCartModal);
+    cartBackdrop.addEventListener('click', hideCartModal);
+    closeCartBtn.addEventListener('click', hideCartModal);
+    continueShoppingBtn.addEventListener('click', hideCartModal);
+    clearCartBtn.addEventListener('click', () => {
+      if (!confirm('Clear the cart?')) return;
+      clearCart();
+      showToast('Cart cleared');
+    });
+
+    // checkout flow
+    checkoutBtn.addEventListener('click', () => {
+      const items = getCartItemsArray();
+      if (items.length === 0) {
+        showToast('Cart is empty. Add items before checkout.');
+        return;
+      }
+      populateCheckout();
+      hideCartModal();
+      checkoutModal.classList.remove('hidden');
+    });
+
+    checkoutClose.addEventListener('click', () => checkoutModal.classList.add('hidden'));
+    checkoutCancel.addEventListener('click', () => checkoutModal.classList.add('hidden'));
+
+    function populateCheckout() {
+      const items = getCartItemsArray();
+      checkoutSummary.innerHTML = '';
+      items.forEach(it => {
+        const div = document.createElement('div');
+        div.className = 'flex justify-between';
+        div.innerHTML = `<div>${escapeHtml(it.name)} x ${it.quantity}</div><div>${formatRupee(it.price * it.quantity)}</div>`;
+        checkoutSummary.appendChild(div);
+      });
+      const totals = computeTotals();
+      checkoutTotal.textContent = formatRupee(totals.subtotal);
+    }
+
+    checkoutForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const items = getCartItemsArray();
+      if (items.length === 0) {
+        showToast('Cart empty - cannot place order.');
+        checkoutModal.classList.add('hidden');
+        return;
+      }
+      const formData = new FormData(checkoutForm);
+      const name = (formData.get('name') || '').trim();
+      const phone = (formData.get('phone') || '').trim();
+      const address = (formData.get('address') || '').trim();
+      if (!name || !phone || !address) {
+        showToast('Please fill all required fields.');
+        return;
+      }
+      // For demo: create an order object and "place" it locally (no server)
+      const order = {
+        id: 'ORD' + Date.now(),
+        createdAt: new Date().toISOString(),
+        customer: { name, phone, address },
+        items: items,
+        totals: computeTotals()
+      };
+      console.log('Order placed (demo)', order);
+      // clear cart and show success
+      clearCart();
+      checkoutForm.reset();
+      checkoutModal.classList.add('hidden');
+      showToast('Order placed successfully! Order ID: ' + order.id);
+    });
+
+    // small helper: escape HTML to prevent basic injection
+    function escapeHtml(s) {
+      if (!s) return '';
+      return s.replace(/[&<>"']/g, function (m) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+      });
+    }
+
+    // toast helper
+    let toastTimeout = null;
+    function showToast(msg, ms = 3000) {
+      toastEl.textContent = msg;
+      toastEl.classList.remove('hidden');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toastEl.classList.add('hidden');
+      }, ms);
+    }
+
+    // initial render
+    renderCartCount();
+
+    // keyboard Escape closes modals
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (!cartModal.classList.contains('hidden')) hideCartModal();
+        if (!checkoutModal.classList.contains('hidden')) checkoutModal.classList.add('hidden');
+      }
+    });
+
+    // Expose some debug helpers on window (optional)
+    window._freshSabzi = {
+      loadCart,
+      saveCart,
+      clearCart,
+      addToCart,
+      renderCartModal
+    };
+  })();
+  </script>
+</body>
+</html>
+
